@@ -21,7 +21,7 @@
 | Column             | Type       | Options                        |
 | --------------     | ------     | -----------                    |
 | name               | string     | null: false                    |
-| text               | text       | null: false                    |
+| introduction       | text       | null: false                    |
 | price              | integer    | null: false                    |
 | item_condition_id  | integer    | null: false                    |
 | category_id        | integer    | null: false                    |
@@ -33,13 +33,14 @@
 ### Association
 
 - belongs_to :user
+- has_many   :purchase_histories
 
 ## buyers テーブル
 
 | Column           | Type       | Options                        |
 | ---------------- | ---------- | ------------------------------ |
 | post_code        | string     | null: false                    |
-| prefecture_id    | string     | null: false                    |
+| prefecture_id    | integer    | null: false                    |
 | city             | string     | null: false                    |
 | address          | string     | null: false                    |
 | building_name    | string     |                                |
@@ -48,7 +49,7 @@
 
 ### Association
 
-- has_one :purchase_history
+- belongs_to :purchase_history
 
 
 
