@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
 
   describe 'ユーザー新規登録' do
     context '新規登録できるとき' do
-      it 'nicknameとemail、passwordとpassword_confirmationが存在すれば登録できる' do
+      it 'nicknameとemail、passwordとpassword_confirmationとfamily_nameとfairst_nameとfamily_name_kanaとfairst_name_kanaとbirthdayが存在すれば登録できる' do
       end
     end
     context '新規登録できないとき' do
@@ -26,25 +26,24 @@ RSpec.describe User, type: :model do
       end
       it 'passwordが129文字以上では登録できない' do
       end
-    end
-  end
-
-  describe '本人情報確認新規登録' do
-    context '新規登録できるとき' do
-      it 'family_nameとfairst_nameとfamily_name_kanaとfairst_name_kanaとbirthdayが存在すれば登録できる' do
-      end
-    end
-    context '新規登録できないとき' do
       it 'family_nameが空では登録できない' do
+      end
+      it 'family_nameが全角（漢字・ひらがな・カタカナ）でないと登録できない' do
       end
       it 'fairst_nameが空では登録できない' do
       end
+      it 'fairst_nameが全角（漢字・ひらがな・カタカナ）でないと登録できない' do
+      end
       it 'family_name_kanaが空では登録できない' do
       end
+      it 'family_name_kanaが全角カタカナでないと登録できない' do
+      end
       it 'fairst_name_kanaが空では登録できない' do
+      end
+      it 'fairst_name_kanaが全角カタカナでないと登録できない' do
       end
       it 'birthdayが空では登録できない' do
       end
     end
-  end 
+  end
 end
