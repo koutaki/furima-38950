@@ -108,7 +108,7 @@ RSpec.describe User, type: :model do
       it 'family_name_kanaが全角カタカナでないと登録できない' do
         @user.family_name_kana = 'やまだ'
         @user.valid?
-       
+        expect(@user.errors[:family_name_kana]).to include('は全角カタカナを使用してください')
       end
       
       it 'fairst_nameに全角（漢字・ひらがな・カタカナ）文字以外の文字を入力すると登録できない' do
@@ -144,7 +144,7 @@ RSpec.describe User, type: :model do
       it 'fairst_name_kanaが全角カタカナでないと登録できない' do
         @user.fairst_name_kana = 'たろう'
         @user.valid?
-       
+        expect(@user.errors[:fairst_name_kana]).to include('は全角カタカナを使用してください')
       end
       it 'birthdayが空では登録できない' do
         @user.birthday = ''
