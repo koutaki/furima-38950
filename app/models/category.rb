@@ -14,6 +14,6 @@ class Category < ActiveHash::Base
   ]
 
   include ActiveHash::Associations
-  has_many :iteme
+  has_many :items
 
   end

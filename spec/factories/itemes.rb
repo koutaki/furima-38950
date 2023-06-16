@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :iteme do
+  factory :item do
     name              {Faker::Name.initials(number: 2)}
     price             {300}
     item_condition_id { 2 }
