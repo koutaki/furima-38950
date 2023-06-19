@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
-  
+  before_action :set_item, only: [:show, :edit, :update]
+
   def index
     
     @items = Item.order("created_at DESC")
@@ -22,14 +23,11 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
+    
   end
 
   def edit
-    @item = Item.find(params[:id])
-    if current_user.nil?
-      redirect_to new_user_session_path, alert: 'ログインしてください'
-    elsif current_user == @item.user 
+    if current_user == @item.user 
       render :edit
     else
       redirect_to root_path, alert: '商品の編集はできません。'
@@ -37,7 +35,7 @@ class ItemsController < ApplicationController
   end
 
   def update
-    @item = Item.find(params[:id])
+    
     if current_user == @item.user 
       if @item.update(item_params)
         redirect_to @item, notice: '商品が正常に更新されました。'
@@ -50,6 +48,12 @@ class ItemsController < ApplicationController
   end
 
   private
+  
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+
   def item_params
     params.require(:item).permit(:name, :price, :item_condition_id, :introduction, :category_id, :shipping_cost_id, :prefecture_id, :shipping_day_id, :image)
   end
