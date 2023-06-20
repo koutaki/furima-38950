@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit]
-  before_action :set_item, only: [:show, :edit, :update]
-  before_action :redirect_to, only: [:edit, :update]
+  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :redirect_unauthorized_user, only: [:edit, :update,:destroy]
 
   def index
     
@@ -28,7 +28,7 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    render :edit
+    
   end
 
   def update
@@ -39,13 +39,22 @@ class ItemsController < ApplicationController
     end
   end
 
+  def destroy
+    @item = Item.find(params[:id])
+    if @item.destroy
+      redirect_to root_path, notice: '商品が正常に削除されました。'
+    else
+      redirect_to root_path, alert: '商品の削除に失敗しました。'
+    end
+  end
+
   private
 
   def set_item
     @item = Item.find(params[:id])
   end
-  
-  def redirect_to
+
+  def redirect_unauthorized_user
     return redirect_to root_path if current_user.id != @item.user.id
   end
 
