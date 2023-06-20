@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit]
   before_action :set_item, only: [:show, :edit, :update]
+  before_action :redirect_to, only: [:edit, :update]
 
   def index
     
@@ -27,30 +28,25 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    if current_user == @item.user 
-      render :edit
-    else
-      redirect_to root_path, alert: '商品の編集はできません。'
-    end
+    render :edit
   end
 
   def update
-    
-    if current_user == @item.user 
-      if @item.update(item_params)
-        redirect_to @item, notice: '商品が正常に更新されました。'
-      else       
-        render :edit
-      end
-    else      
-      redirect_to root_path, alert: '商品の編集はできません。'
+    if @item.update(item_params)
+      redirect_to @item, notice: '商品が正常に更新されました。'
+    else
+      render :edit
     end
   end
 
   private
-  
+
   def set_item
     @item = Item.find(params[:id])
+  end
+  
+  def redirect_to
+    return redirect_to root_path if current_user.id != @item.user.id
   end
 
 
