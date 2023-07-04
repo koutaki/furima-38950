@@ -3,7 +3,13 @@ class OrdersController < ApplicationController
   before_action :set_item, only: [:index, :create]
 
   def index
-    @order_address = OrderAddress.new
+    if !user_signed_in?
+      redirect_to new_user_session_path
+    elsif @item.sold_out?
+      redirect_to root_path
+    else
+      @order_address = OrderAddress.new
+    end
   end
 
   def create
@@ -24,9 +30,6 @@ class OrdersController < ApplicationController
     params.require(:order_address).permit(:prefecture_id, :postal_code, :city, :house_number, :building_name, :phone_number).merge(user_id: current_user.id, item_id: @item.id,token: params[:token])
   end
 
-  #def address_params
-    #params.require(:order_address).permit(:prefecture_id, :postal_code, :city, :house_number, :building_name, :phone_number).merge( order_id: @order.id )
-  #end
   def set_item
     @item = Item.find(params[:item_id])
   end
@@ -34,7 +37,6 @@ class OrdersController < ApplicationController
   def pay_item
     #binding.pry学習の記録のために残す
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
-    
     Payjp::Charge.create(
       amount: @item.price,   
       card: order_params[:token],    # カードトークン
