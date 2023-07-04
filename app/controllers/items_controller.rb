@@ -41,6 +41,8 @@ class ItemsController < ApplicationController
 
   def destroy
     @item = Item.find(params[:id])
+    @item.order.destroy if @item.order
+    @item.order.address.destroy if @item.order&.address
     if @item.destroy
       redirect_to root_path, notice: '商品が正常に削除されました。'
     else

@@ -1,6 +1,7 @@
 const pay = () => {
-console.log("OK")
+//console.log("OK")学習の記録のために残す
   const payjp = Payjp(process.env.PAYJP_PUBLIC_KEY);
+  //console.log(process.env.PAYJP_PUBLIC_KEY)学習の記録のために残す
   const elements = payjp.elements();
   const numberElement = elements.create('cardNumber');
   const expiryElement = elements.create('cardExpiry');
@@ -13,7 +14,7 @@ console.log("OK")
   const submit = document.getElementById("button");
 
   submit.addEventListener("click", (e) => {
-    console.log("OK")
+    //console.log("OK")学習の記録のために残す
     e.preventDefault();
     payjp.createToken(numberElement).then(function (response) {
       if (response.error) {
