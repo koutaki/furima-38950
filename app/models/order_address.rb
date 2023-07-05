@@ -7,13 +7,12 @@ class OrderAddress
     validates :city
     validates :house_number
     validates :phone_number, format: { with: /\A\d+\z/, message: "は半角数字のみで入力してください" }
-    validates :phone_number, length: { in: 10..11, message: "は10桁以上11桁以下で入力してください" }
     validates :user_id
     validates :item_id
     validates :token
   end
     
-
+  validates :phone_number, length: { in: 10..11, message: "は10桁以上11桁以下で入力してください" }
 
   def save
     # 購入情報を保存し、変数orderに代入する

@@ -7,7 +7,7 @@ class Item < ApplicationRecord
   belongs_to :item_condition
   has_one_attached :image
   belongs_to :user
-  has_one :order, dependent: :destroy
+  has_one :order
 
   validates :name,              presence: true
   validates :introduction,      presence: true
