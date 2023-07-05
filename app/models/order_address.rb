@@ -4,14 +4,16 @@ class OrderAddress
   with_options presence: true do
     validates :postal_code,       format: {with: /\A[0-9]{3}-[0-9]{4}\z/,        message: "is invalid. Include hyphen(-)"}
     validates :prefecture_id,     numericality: { other_than: 1 ,                message: "can't be blank"}
-    validates :city,              format: { with: /\A[ぁ-んァ-ン一-龥々ヶー]+\z/, message: 'は全角（漢字・ひらがな・カタカナ）文字を使用してください' }
-    validates :house_number,      format: { with: /\A[a-z0-9]+\z/i,              message: 'は半角英数字を使用してください'  }  
-    validates :building_name,     format: { with: /\A[ぁ-んァ-ン一-龥々ヶー]+\z/, message: 'は全角（漢字・ひらがな・カタカナ）文字を使用してください' }, allow_blank: true    
-    validates :phone_number,      numericality: { only_integer: true,            message: 'は半角数値で入力してください' }
+    validates :city
+    validates :house_number
+    validates :phone_number, format: { with: /\A\d+\z/, message: "は半角数字のみで入力してください" }
+    validates :phone_number, length: { in: 10..11, message: "は10桁以上11桁以下で入力してください" }
     validates :user_id
     validates :item_id
-    validates :token, presence: true
+    validates :token
   end
+    
+
 
   def save
     # 購入情報を保存し、変数orderに代入する

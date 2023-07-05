@@ -4,7 +4,8 @@ RSpec.describe OrderAddress, type: :model do
   describe '配送情報の保存' do
     before do
       user = FactoryBot.create(:user)
-      @order_address = FactoryBot.build(:order_address, user_id: user.id)
+      item = FactoryBot.create(:item, user: user)
+      @order_address = FactoryBot.build(:order_address, user_id: user.id, item_id: item.id)
     end
 
     context '内容に問題ない場合' do
@@ -56,30 +57,35 @@ RSpec.describe OrderAddress, type: :model do
         expect(@order_address.errors.full_messages).to include("User can't be blank")        
       end
 
-      it 'cityが全角（漢字・ひらがな・カタカナ）文字以外を含む場合は保存できないこと' do
-        @order_address.city = 'Tokyo123'
-        @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('City は全角（漢字・ひらがな・カタカナ）文字を使用してください')
-      end
-
-      it 'house_numberが半角英数字以外の文字を含む場合は保存できないこと' do
-        @order_address.house_number = '１２３'
-        @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('House number は半角英数字を使用してください')
-      end
-
-      it 'building_nameに半角文字が含まれる場合は保存できないこと' do
-        @order_address.building_name = '1A号室'
-        @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('Building name は全角（漢字・ひらがな・カタカナ）文字を使用してください')
-      end
-
       it 'phone_numberに半角文字が含まれる場合は保存できないこと' do
         @order_address.phone_number = '0000abcd'
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('Phone number は半角数値で入力してください')
+        expect(@order_address.errors[:phone_number]).to include('は半角数字のみで入力してください')
+      end
+
+      it 'phone_numberが9桁以下では保存できないこと' do
+        @order_address.phone_number = '123456789'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Phone number は10桁以上11桁以下で入力してください')
       end
       
+      it 'phone_numberが12桁以上では保存できないこと' do
+        @order_address.phone_number = '123456789012'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Phone number は10桁以上11桁以下で入力してください')
+      end
+
+      it 'tokenが空では保存できないこと' do
+        @order_address.token = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Token can't be blank")
+      end
+
+      it 'itemが紐付いていなければ保存できないこと' do
+        @order_address.item_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Item can't be blank")
+      end
     end
   end
 end  

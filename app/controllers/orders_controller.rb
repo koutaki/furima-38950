@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :create]
   before_action :set_item, only: [:index, :create]
+  before_action :prevent_edit_if_sold, only: [:index]
 
   def index
     if !user_signed_in?
@@ -21,6 +22,12 @@ class OrdersController < ApplicationController
       redirect_to root_path
     else
       render :index
+    end
+  end
+
+  def prevent_edit_if_sold
+    if @item.sold_out?
+      redirect_to root_path
     end
   end
 
