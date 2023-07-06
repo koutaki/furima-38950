@@ -110,6 +110,7 @@
   display: flex;
   text-align: center;
   line-height: 55px;
+  
 }
 
 .input-expiration-date {
@@ -123,6 +124,7 @@
   resize: none;
   line-height: 45px;
   text-align: center;
+  
 }
 
 /* /カード情報の入力 */
