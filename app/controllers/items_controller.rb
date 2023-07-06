@@ -41,11 +41,6 @@ class ItemsController < ApplicationController
 
   def destroy
     @item = Item.find(params[:id])
-
-    if @item.order.present?
-      @item.order.destroy
-      @item.order.address.destroy if @item.order.address.present?
-    end
     
     if @item.destroy
       redirect_to root_path, notice: '商品が正常に削除されました。'
@@ -61,7 +56,7 @@ class ItemsController < ApplicationController
   end
 
   def redirect_unauthorized_user
-    @item = Item.find(params[:id])
+    # @item = Item.find(params[:id]) DRY原則に則り、削除
     if @item.order.present? || @item.user != current_user
       redirect_to root_path
     end

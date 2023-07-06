@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:create]
   before_action :set_item, only: [:index, :create]
-  before_action :prevent_edit_if_sold, only: [:index]
+  
 
   def index
     @order_address = OrderAddress.new
@@ -22,11 +22,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def prevent_edit_if_sold
-    if @item.sold_out?
-      redirect_to root_path
-    end
-  end
 
   private
 
